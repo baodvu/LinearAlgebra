@@ -13,33 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package matrix.models;
+package mathproject.presenters;
 
-import java.util.Arrays;
+import mathproject.models.Vector;
 
 /**
- * Holds values of and basic information about a vector
+ *
  * @author Bao
  */
-public class Vector {
-    private double[] components;
+public class VectorOperation {
     
-    public Vector(double[] c) {
-        components = c;
+    public static double dotProduct(Vector v1, Vector v2) {
+        double product = 0;
+         
+        for (int i = 1; i <= v1.size()) {
+            v1.get(i);
+        }
     }
     
-    public int size() {
-        return components.length;
-    }
-    
-    public double get(int i) {
-        return components[i-1];
-    }
-
-    @Override
-    public String toString() {
-        if (components != null)
-            return Arrays.toString(components);
-        return null;
-    }
 }

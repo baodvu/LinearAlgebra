@@ -13,35 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package matrix;
-
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+package mathproject.models;
 
 /**
- *
+ * Holds values of and basic information about a matrix
  * @author Bao
  */
-public class Main extends Application {
+public class Matrix {
+    public int n; //number of rows
+    public int m; //number of columns
+    public double[][] matrix;
     
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.show();
+    public Matrix(int n, int m) {
+        if (n < 1 || m < 1) throw new IllegalArgumentException();
+        this.n = n;
+        this.m = m;
+        matrix = new double[n][m];
     }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
+    
+    public double get(int n, int m) {
+        return matrix[n][m];
+    }
+    
+    public void put(int n, int m, double value) {
+        matrix[n][m] = value;
     }
     
 }

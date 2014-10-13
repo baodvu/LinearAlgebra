@@ -1,3 +1,5 @@
+package mathproject;
+
 /*
  * Copyright 2014 Bao.
  *
@@ -13,30 +15,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package matrix.models;
+
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
- * Holds values of and basic information about a matrix
+ *
  * @author Bao
  */
-public class Matrix {
-    public int n; //number of rows
-    public int m; //number of columns
-    public double[][] matrix;
+public class Main extends Application {
     
-    public Matrix(int n, int m) {
-        if (n < 1 || m < 1) throw new IllegalArgumentException();
-        this.n = n;
-        this.m = m;
-        matrix = new double[n][m];
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        
+        Scene scene = new Scene(root);
+        
+        stage.setScene(scene);
+        stage.show();
     }
-    
-    public double get(int n, int m) {
-        return matrix[n][m];
-    }
-    
-    public void put(int n, int m, double value) {
-        matrix[n][m] = value;
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
     }
     
 }
