@@ -1,22 +1,7 @@
-/*
- * Copyright 2014 Bao.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package mathproject.models;
 
 import java.util.Arrays;
-import mathproject.presenters.MatrixOperation;
+import mathproject.presenters.MatrixOps;
 
 /**
  * Holds values of and basic information about a matrix
@@ -53,6 +38,17 @@ public class Matrix {
         return m;
     }
     
+    public double vectorNormCol(int c) {
+        return getColumn(c).vectorNorm();
+    }
+    public double vectorNorm() {
+        double norm = 0;
+        for (int i = 0; i < m*n; i++) {
+            norm += Math.pow(matrix[i/m][i%m], 2.0);
+        }
+        return Math.sqrt(norm);
+    }
+    
     public Matrix getColumn(int col) {
         Matrix m1 = new Matrix(n, 1);
         for (int r = 1; r <= n; r++)
@@ -70,24 +66,47 @@ public class Matrix {
         }
     }
     
+    public Matrix copy() {
+        return MatrixOps.copy(this);
+    }
     public Matrix add(Matrix m2) {
-        return MatrixOperation.add(this, m2);
+        return MatrixOps.add(this, m2);
     }
-    
     public Matrix subtract(Matrix m2) {
-        return MatrixOperation.subtract(this, m2);
+        return MatrixOps.subtract(this, m2);
     }
-    
     public Matrix multiply(Matrix m2) {
-        return MatrixOperation.multiply(this, m2);
+        return MatrixOps.multiply(this, m2);
     }
-
     public Matrix multiply(double scalar) {
-        return MatrixOperation.multiply(this, scalar);
+        return MatrixOps.multiply(this, scalar);
     }
-    
     public Matrix transpose() {
-        return MatrixOperation.transpose(this);
+        return MatrixOps.transpose(this);
+    }
+    public void scale(int row, double scalar) {
+        MatrixOps.scale(this, row, scalar);
+    }
+    public void swap(int row1, int row2) {
+        MatrixOps.swap(this, row1, row2);
+    }
+    public void pivot(int row1, int row2) {
+        MatrixOps.pivot(this, row1, row2);
+    }
+    public int findPivotingRow(int col) {
+        return MatrixOps.findPivotingRow(this, col);
+    }
+    public void rowReduce() {
+        MatrixOps.rowReduce(this);
+    }
+    public void rowEchelonReduce() {
+        MatrixOps.rowEchelonReduce(this);
+    }
+    public Matrix getInverse() {
+        return MatrixOps.getInverse(this);
+    }
+    public int rank() {
+        return MatrixOps.rank(this);
     }
     
     @Override
