@@ -21,25 +21,35 @@ import java.util.Arrays;
  * Holds values of and basic information about a vector
  * @author Bao
  */
-public class Vector {
-    private double[] components;
+public class Vector extends Matrix{
     
-    public Vector(double[] c) {
-        components = c;
+    public Vector(double... c) {
+        super(c.length, 1);
+        super.put(c);
     }
     
     public int size() {
-        return components.length;
+        return super.getNumberOfRows();
     }
     
     public double get(int i) {
-        return components[i-1];
+        return super.get(i, 1);
     }
-
+    
+    public double dotProduct(Vector v2) {
+        return super.transpose().multiply(v2).get(1, 1);
+    }
+    
     @Override
-    public String toString() {
-        if (components != null)
-            return Arrays.toString(components);
-        return null;
+    public boolean equals(Object obj) {
+        Vector vec2 = (Vector) obj;
+        if (size() != vec2.size()) return false;
+        boolean equality = true;
+        for (int i = 1; i <= size(); i++)
+            if (get(i) != vec2.get(i)) {
+                equality = false;
+            }
+        return equality;
     }
+    
 }
