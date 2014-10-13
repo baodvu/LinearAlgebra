@@ -7,6 +7,7 @@
 package mathproject.presenters;
 
 import mathproject.models.Matrix;
+import static mathproject.presenters.MatrixOps.findPivotingRow;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,16 +41,15 @@ public class MatrixOperationTest {
     }
 
     /**
-     * Test of multiply method, of class MatrixOperation.
+     * Test of multiply method, of class MatrixOps.
      */
     @Test
     public void testMultiplyTwoMatrices() {
-        System.out.println("multiply");
         Matrix m1 = new Matrix(2, 3);
         m1.put(1,2,3,4,5,6);
         Matrix m2 = new Matrix(3, 2);
         m2.put(7,8,9,10,11,12);
-        Matrix result = MatrixOperation.multiply(m1, m2);
+        Matrix result = MatrixOps.multiply(m1, m2);
         Matrix expResult = new Matrix(2, 2);
         expResult.put(58, 64, 139, 154);
         assertEquals(expResult, result);
@@ -57,12 +57,11 @@ public class MatrixOperationTest {
     
     @Test
     public void testAddTwoMatrices() {
-        System.out.println("add");
         Matrix m1 = new Matrix(2, 3);
         m1.put(1,2,3,4,5,6);
         Matrix m2 = new Matrix(2, 3);
         m2.put(7,8,9,10,11,12);
-        Matrix result = MatrixOperation.add(m1, m2);
+        Matrix result = MatrixOps.add(m1, m2);
         Matrix expResult = new Matrix(2, 3);
         expResult.put(8,10,12,14,16,18);
         assertEquals(expResult, result);
@@ -72,10 +71,26 @@ public class MatrixOperationTest {
     public void testTranspose() {
         Matrix m1 = new Matrix(2, 3);
         m1.put(1,2,3,4,5,6);
-        Matrix result = MatrixOperation.transpose(m1);
-        System.out.print(result);
+        Matrix result = MatrixOps.transpose(m1);
         Matrix expResult = new Matrix(3,2);
         expResult.put(1,4,2,5,3,6);
         assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testRowReduceAndRank() {
+        Matrix m1 = new Matrix(3, 4);
+        m1.put(3,2,-1,1,1,-2,1,0,-3,-2,1,-1);
+        m1.rowReduce();
+        assertEquals(2, m1.rank());
+    }
+    
+    @Test
+    public void testInverse(){
+        Matrix m1 = new Matrix(3, 3);
+        m1.put(0,1,2,1,0,3,4,-3,8);
+        Matrix mInverse = m1.getInverse();
+        MatrixOps.prettify(mInverse);
+        System.out.println(mInverse);
     }
 }
