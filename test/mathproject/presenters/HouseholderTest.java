@@ -62,10 +62,11 @@ public class HouseholderTest {
      */
     @Test
     public void testCalculate() {
-        Matrix A =  new Matrix(3,3);
-        A.put(4,2,2,2,4,2,2,2,4);
+        Matrix A =  new Matrix(4,2);
+        A.put(1,2,3,4,5,6,7,8);
         Householder instance = new Householder(A);
-        instance.calculate();
+        System.out.println(instance.getQ());
+        System.out.println(instance.getR());
         Matrix expResult = MatrixOps.multiply(instance.getQ(), instance.getR());
         MatrixOps.prettify(expResult);
         assertEquals(A, expResult);

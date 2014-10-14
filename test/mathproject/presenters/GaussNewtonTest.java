@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import mathproject.models.Point;
 import mathproject.models.Vector;
+import mathproject.models.functions.ExponentialFunction;
 import mathproject.models.functions.Function;
 import mathproject.models.functions.RationalFunction;
 import org.junit.After;
@@ -41,9 +42,9 @@ import org.junit.Test;
  *
  * @author bvu
  */
-public class GuassNewtonTest {
+public class GaussNewtonTest {
     
-    public GuassNewtonTest() {
+    public GaussNewtonTest() {
     }
     
     @BeforeClass
@@ -64,7 +65,7 @@ public class GuassNewtonTest {
 
     @Test
     public void testSomeMethod() {
-        List<Point> dataset = new LinkedList<>();
+        /*List<Point> dataset = new LinkedList<>();
         dataset.add(new Point(0.038, 0.050));
         dataset.add(new Point(0.194, 0.127));
         dataset.add(new Point(0.425, 0.094));
@@ -73,8 +74,22 @@ public class GuassNewtonTest {
         dataset.add(new Point(2.500, 0.2665));
         dataset.add(new Point(3.740, 0.3317));
         Function rf = new RationalFunction();
-        Vector beta = new Vector(0.9, 0.2, 0.6);
-        GuassNewton gn = new GuassNewton();
+        Vector beta = new Vector(0.9, 0.2, 0.2);
+        GaussNewton gn = new GaussNewton();
+        gn.setUp(dataset, rf, beta, 5);*/
+    }
+    
+    @Test
+    public void testGN2() {
+        List<Point> dataset = new LinkedList<>();
+        dataset.add(new Point(1, 3.2939));
+        dataset.add(new Point(2, 4.2699));
+        dataset.add(new Point(4, 7.1749));
+        dataset.add(new Point(5, 9.3008));
+        dataset.add(new Point(8, 20.259));
+        Function rf = new ExponentialFunction();
+        Vector beta = new Vector(2.50, 0.25);
+        GaussNewton gn = new GaussNewton();
         gn.setUp(dataset, rf, beta, 5);
     }
     

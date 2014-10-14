@@ -15,6 +15,7 @@ public class Householder implements QRFactorization {
     
     public Householder(Matrix A) {
         setA(A);
+        calculate();
     }
     
     @Override

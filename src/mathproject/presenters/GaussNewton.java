@@ -11,14 +11,14 @@ import mathproject.models.functions.Function;
  *
  * @author bvu
  */
-public class GuassNewton {
+public class GaussNewton {
     private List<Point> dataTable;
     private Function function;
     private int N;
     private Vector beta, r;
     private Matrix J;
 
-    public GuassNewton() {
+    public GaussNewton() {
         
     }   
     
@@ -39,10 +39,20 @@ public class GuassNewton {
                     J.put(i, j, -function.getPartialDerivative(j, beta, dataTable.get(i-1).getX()));
                 }
             }
-            beta = MatrixOps.toVector(beta.subtract(J.transpose().multiply(J).getInverse().multiply(J.transpose()).multiply(r)));
+            beta = calculateBetaEnhanced();
             //MatrixOps.prettify(beta);
             System.out.println(beta);
+            System.out.println(Math.pow(r.norm(), 2));
         }
+    }
+    
+    public Vector calculateBeta() {
+        return MatrixOps.toVector(beta.subtract(J.transpose().multiply(J).getInverse().multiply(J.transpose()).multiply(r)));
+    }
+        
+    public Vector calculateBetaEnhanced() {
+        Householder hh = new Householder(J);
+        return MatrixOps.toVector(beta.subtract(hh.getR().getInverse().multiply(hh.getQ().transpose()).multiply(r)));
     }
     
     private Vector getR() {
