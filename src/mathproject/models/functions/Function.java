@@ -22,53 +22,24 @@
  * THE SOFTWARE.
  */
 
-package mathproject.presenters;
+package mathproject.models.functions;
 
-import mathproject.models.Matrix;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import mathproject.models.Vector;
 
 /**
  *
  * @author bvu
  */
-public class HouseholderTest {
+public interface Function {
     
-    public HouseholderTest() {
-    }
+    public double getValue(Vector v, double x);
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
+    public double getPartialDerivative(int j, Vector v, double x);
     
-    @AfterClass
-    public static void tearDownClass() {
-    }
+    public double getPartialDerivativeA(Vector v, double x);
     
-    @Before
-    public void setUp() {
-    }
+    public double getPartialDerivativeB(Vector v, double x);
     
-    @After
-    public void tearDown() {
-    }
-    
-    /**
-     * Test of calculate method, of class Householder.
-     */
-    @Test
-    public void testCalculate() {
-        Matrix A =  new Matrix(3,3);
-        A.put(4,2,2,2,4,2,2,2,4);
-        Householder instance = new Householder(A);
-        instance.calculate();
-        Matrix expResult = MatrixOps.multiply(instance.getQ(), instance.getR());
-        MatrixOps.prettify(expResult);
-        assertEquals(A, expResult);
-    }
+    public double getPartialDerivativeC(Vector v, double x);
     
 }

@@ -22,9 +22,10 @@
  * THE SOFTWARE.
  */
 
-package mathproject.presenters;
+package mathproject.models;
 
-import mathproject.models.Matrix;
+import mathproject.models.functions.QuadraticFunction;
+import mathproject.models.functions.Function;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -36,9 +37,9 @@ import static org.junit.Assert.*;
  *
  * @author bvu
  */
-public class HouseholderTest {
+public class QuadraticFunctionTest {
     
-    public HouseholderTest() {
+    public QuadraticFunctionTest() {
     }
     
     @BeforeClass
@@ -56,19 +57,11 @@ public class HouseholderTest {
     @After
     public void tearDown() {
     }
-    
-    /**
-     * Test of calculate method, of class Householder.
-     */
+
     @Test
-    public void testCalculate() {
-        Matrix A =  new Matrix(3,3);
-        A.put(4,2,2,2,4,2,2,2,4);
-        Householder instance = new Householder(A);
-        instance.calculate();
-        Matrix expResult = MatrixOps.multiply(instance.getQ(), instance.getR());
-        MatrixOps.prettify(expResult);
-        assertEquals(A, expResult);
+    public void testSomeMethod() {
+        Function f = new QuadraticFunction(1, 2, 3);
+        System.out.println(f.getY(2));
     }
     
 }

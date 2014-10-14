@@ -1,6 +1,7 @@
 package mathproject.presenters;
 
 import mathproject.models.Matrix;
+import mathproject.models.Vector;
 
 /**
  * Performs basic matrix operation
@@ -30,10 +31,11 @@ public class MatrixOps {
                 target.put(r + r1 - 1, c + c1 - 1, source.get(r, c));
     }
     
-    public static void prettify(Matrix m) { //AKA Round-up
+    public static Matrix prettify(Matrix m) { //AKA Round-up
         for (int r = 1; r <= m.getNumberOfRows(); r++)
             for (int c = 1; c <= m.getNumberOfCols(); c++)
                 m.put(r, c , (double)Math.round(m.get(r, c) * 100000) / 100000);
+        return m;
     }
     
     public static Matrix add(Matrix m1, Matrix m2) {
@@ -193,6 +195,14 @@ public class MatrixOps {
         Matrix m1 = new Matrix(n, 1);
         m1.put(c, 1, 1);
         return m1;
+    }
+    
+    public static Vector toVector(Matrix m) {
+        double[] values = new double[m.getNumberOfRows()];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = m.get(i+1, 1);
+        }
+        return new Vector(values);
     }
     
 }

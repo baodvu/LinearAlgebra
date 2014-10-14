@@ -87,10 +87,9 @@ public class MatrixOperationTest {
     
     @Test
     public void testInverse(){
-        Matrix m1 = new Matrix(3, 3);
-        m1.put(0,1,2,1,0,3,4,-3,8);
+        Matrix m1 = new Matrix(4, 4);
+        m1.put(0,1,2,1,0,3,4,-3,8,5,8,9,3,7,0,2);
         Matrix mInverse = m1.getInverse();
-        MatrixOps.prettify(mInverse);
-        System.out.println(mInverse);
+        assertEquals(MatrixOps.prettify(MatrixOps.multiply(m1, mInverse)), MatrixOps.getIdentityMatrix(4));
     }
 }

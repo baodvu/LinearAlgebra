@@ -50,7 +50,6 @@ public class Householder implements QRFactorization {
         //Calculate Q
         Q = Hs.get(0);
         for (int i = 1; i < Hs.size(); i++) {
-            System.out.println(i);
             Q = Q.multiply(Hs.get(1));
         }
         

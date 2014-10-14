@@ -24,21 +24,26 @@
 
 package mathproject.presenters;
 
-import mathproject.models.Matrix;
+import java.util.LinkedList;
+import java.util.List;
+import mathproject.models.Point;
+import mathproject.models.Vector;
+import mathproject.models.functions.Function;
+import mathproject.models.functions.RationalFunction;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author bvu
  */
-public class HouseholderTest {
+public class GuassNewtonTest {
     
-    public HouseholderTest() {
+    public GuassNewtonTest() {
     }
     
     @BeforeClass
@@ -56,19 +61,21 @@ public class HouseholderTest {
     @After
     public void tearDown() {
     }
-    
-    /**
-     * Test of calculate method, of class Householder.
-     */
+
     @Test
-    public void testCalculate() {
-        Matrix A =  new Matrix(3,3);
-        A.put(4,2,2,2,4,2,2,2,4);
-        Householder instance = new Householder(A);
-        instance.calculate();
-        Matrix expResult = MatrixOps.multiply(instance.getQ(), instance.getR());
-        MatrixOps.prettify(expResult);
-        assertEquals(A, expResult);
+    public void testSomeMethod() {
+        List<Point> dataset = new LinkedList<>();
+        dataset.add(new Point(0.038, 0.050));
+        dataset.add(new Point(0.194, 0.127));
+        dataset.add(new Point(0.425, 0.094));
+        dataset.add(new Point(0.626, 0.2122));
+        dataset.add(new Point(1.253, 0.2729));
+        dataset.add(new Point(2.500, 0.2665));
+        dataset.add(new Point(3.740, 0.3317));
+        Function rf = new RationalFunction();
+        Vector beta = new Vector(0.9, 0.2, 0.6);
+        GuassNewton gn = new GuassNewton();
+        gn.setUp(dataset, rf, beta, 5);
     }
     
 }
