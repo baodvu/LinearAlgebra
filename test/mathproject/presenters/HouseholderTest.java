@@ -61,7 +61,7 @@ public class HouseholderTest {
      * Test of calculate method, of class Householder.
      */
     @Test
-    public void testCalculate() {
+    public void testCalculate() {/*
         Matrix A =  new Matrix(4,2);
         A.put(1,2,3,4,5,6,7,8);
         Householder instance = new Householder(A);
@@ -69,6 +69,22 @@ public class HouseholderTest {
         System.out.println(instance.getR());
         Matrix expResult = MatrixOps.multiply(instance.getQ(), instance.getR());
         MatrixOps.prettify(expResult);
+        assertEquals(A, expResult);*/
+    }
+    
+        /**
+     * Test of calculate method, of class Householder.
+     */
+    @Test
+    public void testCalculate1() {
+        Matrix A =  new Matrix(4,3);
+        A.put(1,0,1,0,1,1,1,1,0,2,1,0);
+        Householder instance = new Householder(A);
+        System.out.println(instance.getQ());
+        System.out.println(MatrixOps.prettify(instance.getR()));
+        Matrix expResult = MatrixOps.multiply(instance.getQ(), instance.getR());
+        MatrixOps.prettify(expResult);
+        System.out.println(expResult);
         assertEquals(A, expResult);
     }
     
