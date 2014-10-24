@@ -1,9 +1,10 @@
-package mathproject.presenters;
+package mathproject.presenters.factor;
 
 import java.util.ArrayList;
 import java.util.List;
 import mathproject.models.Matrix;
 import mathproject.models.Vector;
+import mathproject.presenters.MatrixOps;
 
 /**
  *

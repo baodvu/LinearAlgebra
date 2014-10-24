@@ -1,4 +1,4 @@
-package mathproject.presenters;
+package mathproject.presenters.factor;
 
 import mathproject.models.Matrix;
 
