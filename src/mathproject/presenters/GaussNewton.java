@@ -39,20 +39,27 @@ public class GaussNewton {
                     J.put(i, j, -function.getPartialDerivative(j, beta, dataTable.get(i-1).getX()));
                 }
             }
-            beta = calculateBetaEnhanced();
-            //MatrixOps.prettify(beta);
-            System.out.println(beta);
-            System.out.println(Math.pow(r.norm(), 2));
+            calculateBeta2();
         }
     }
     
-    public Vector calculateBeta() {
-        return MatrixOps.toVector(beta.subtract(J.transpose().multiply(J).getInverse().multiply(J.transpose()).multiply(r)));
+    public void calculateBeta() {
+        Matrix temp = MatrixOps.prettify(J.transpose().multiply(J));
+        temp = MatrixOps.prettify(temp.getInverse());
+        temp = temp.multiply(MatrixOps.prettify(J.transpose().multiply(MatrixOps.prettify(r))));
+        temp = MatrixOps.prettify(temp);
+        System.out.println(temp);
     }
         
-    public Vector calculateBetaEnhanced() {
+    public void calculateBeta2() {
         Householder hh = new Householder(J);
-        return MatrixOps.toVector(beta.subtract(hh.getR().getInverse().multiply(hh.getQ().transpose()).multiply(r)));
+        Matrix QT = hh.getQ().transpose();
+        Vector Qr = MatrixOps.toVector(QT.multiply(r));
+        Matrix R = hh.getR();
+        double x3 = Qr.get(3)/R.get(3, 3);
+        double x2 = (Qr.get(2)-R.get(2, 3)*x3)/R.get(2, 2);
+        double x1 = (Qr.get(1)-R.get(1, 2)*x2-R.get(1, 3)*x3)/R.get(1, 1);
+        beta = new Vector(beta.get(1) - x1, beta.get(2) - x2, beta.get(3) - x3);
     }
     
     private Vector getR() {
@@ -67,4 +74,7 @@ public class GaussNewton {
         return dataTable.get(i).getY() - function.getValue(beta, dataTable.get(i).getX());
     }
     
+    public Vector getBeta() {
+        return beta;
+    }
 }

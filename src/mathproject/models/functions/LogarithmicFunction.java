@@ -6,11 +6,11 @@ import mathproject.models.Vector;
  *
  * @author bvu
  */
-public class QuadraticFunction implements Function{
+public class LogarithmicFunction implements Function {
 
     @Override
     public double getValue(Vector v, double x) {
-        return v.get(1)*Math.pow(x,2) + v.get(2)*x + v.get(3);
+        return v.get(1)*Math.log(x + v.get(2)) + v.get(3);
     }
 
     @Override
@@ -25,17 +25,17 @@ public class QuadraticFunction implements Function{
 
     @Override
     public double getPartialDerivativeA(Vector v, double x) {
-        return Math.pow(v.get(1)*x,2);
+        return Math.log(x + v.get(2));
     }
 
     @Override
     public double getPartialDerivativeB(Vector v, double x) {
-        return x;
+        return v.get(1) / (x + v.get(2));
     }
 
     @Override
     public double getPartialDerivativeC(Vector v, double x) {
         return 1;
     }
-    
+
 }

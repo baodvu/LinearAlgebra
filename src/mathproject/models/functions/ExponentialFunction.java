@@ -10,7 +10,7 @@ public class ExponentialFunction implements Function {
 
     @Override
     public double getValue(Vector v, double x) {
-        return v.get(1) * Math.pow(Math.E, x*v.get(2));
+        return v.get(1) * Math.pow(Math.E, v.get(2) * x) + v.get(3);
     }
 
     @Override
@@ -25,12 +25,12 @@ public class ExponentialFunction implements Function {
 
     @Override
     public double getPartialDerivativeA(Vector v, double x) {
-        return Math.pow(Math.E, x*v.get(2));
+        return Math.pow(Math.E, v.get(2) * x);
     }
 
     @Override
     public double getPartialDerivativeB(Vector v, double x) {
-        return v.get(1) * x * Math.pow(Math.E, x*v.get(2));
+        return v.get(1) * x * Math.pow(Math.E, x * v.get(2));
     }
 
     @Override
