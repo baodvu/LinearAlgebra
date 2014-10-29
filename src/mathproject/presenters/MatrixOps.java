@@ -205,4 +205,23 @@ public class MatrixOps {
         return new Vector(values);
     }
     
+    public static double determinant2x2(Matrix m) {
+        return m.get(1, 1) * m.get(2, 2) - m.get(2, 1) * m.get(1, 2);
+    }
+    
+    public static Matrix inverse2x2(Matrix m) {
+        Matrix ret = new Matrix(2, 2);
+        ret.put(m.get(2, 2), -m.get(1, 2), -m.get(2, 1), m.get(1, 1));
+        return multiply(ret, 1/determinant2x2(m));
+    }
+    
+    public static double trace(Matrix m) {
+        double sum = 0;
+        int max = Math.min(m.getNumberOfCols(), m.getNumberOfRows());
+        for (int i = 1; i <= max; i++) {
+            sum += m.get(i, i);
+        }
+        return sum;
+    }
+    
 }

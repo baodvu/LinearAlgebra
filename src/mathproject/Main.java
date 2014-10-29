@@ -17,26 +17,42 @@ package mathproject;
  */
 
 
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import mathproject.presenters.MainWindowController;
 
 /**
  *
  * @author Bao
  */
 public class Main extends Application {
+    private Stage stage;
     
+    /**
+     * Starts the Application
+     */
     @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) {
+        try {
+            stage = primaryStage;
+            stage.setTitle("Numerical approximation");
+            stage.setMinWidth(800);
+            stage.setMinHeight(600);
+            stage.setResizable(false);
+            openMainScreen();
+            primaryStage.show();
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -46,4 +62,44 @@ public class Main extends Application {
         launch(args);
     }
     
+    /**
+     * Goes to welcome (starting) screen
+     */
+    public void openMainScreen() {
+        try {
+            MainWindowController main = (MainWindowController) replaceSceneContent("views/MainWindow.fxml");
+            main.setApp(this);
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Replaces scene content
+     *
+     * @param fxml target fxml
+     * @return controller
+     * @throws Exception
+     */
+    private Initializable replaceSceneContent(String fxml) throws Exception {
+        FXMLLoader loader = new FXMLLoader();
+        InputStream in = Main.class.getResourceAsStream(fxml);
+        loader.setBuilderFactory(new JavaFXBuilderFactory());
+        loader.setLocation(Main.class.getResource(fxml));
+        AnchorPane page;
+        try {
+            page = (AnchorPane) loader.load(in);
+        } finally {
+            in.close();
+        }
+        Scene scene = new Scene(page, 800, 600);
+        stage.setScene(scene);
+        stage.sizeToScene();
+        return (Initializable) loader.getController();
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
 }

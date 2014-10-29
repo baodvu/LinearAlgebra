@@ -1,6 +1,7 @@
 package mathproject.models;
 
 import java.util.Arrays;
+import mathproject.presenters.MatrixOps;
 
 /**
  * Holds values of and basic information about a vector
@@ -22,16 +23,16 @@ public class Vector extends Matrix{
     }
     
     public Vector add(Vector m2) {
-        return (Vector) super.add((Matrix) m2);
+        return MatrixOps.toVector(super.add((Matrix) m2));
     }
     public Vector subtract(Vector m2) {
-        return (Vector) super.subtract((Matrix) m2);
+        return MatrixOps.toVector(super.subtract((Matrix) m2));
     }
     public Vector multiply(Vector m2) {
-        return (Vector) super.multiply((Matrix) m2);
+        return MatrixOps.toVector(super.multiply((Matrix) m2));
     }
     public Vector multiply(double scalar) {
-        return (Vector) super.multiply(scalar);
+        return MatrixOps.toVector(super.multiply(scalar));
     }
     public Matrix transpose() {
         return super.transpose();

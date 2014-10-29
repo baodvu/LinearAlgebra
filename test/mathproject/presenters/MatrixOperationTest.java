@@ -94,5 +94,12 @@ public class MatrixOperationTest {
         Matrix mInverse = m1.getInverse();
         //assertEquals(MatrixOps.prettify(MatrixOps.multiply(m1, mInverse)), MatrixOps.getIdentityMatrix(4));*/
     }
+    
+    @Test
+    public void test2x2() {
+        Matrix m = new Matrix(2, 2);
+        m.put(1, 2, 3, 4);
+        //System.out.println(MatrixOps.inverse2x2(m).multiply(m));
+    }
 
 }
