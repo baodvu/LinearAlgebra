@@ -11,14 +11,15 @@ import mathproject.presenters.MatrixOps;
  * @author bvu
  */
 public class Householder implements QRFactorization {
+
     private Matrix A, Q, R;
     private List<Matrix> Hs;
-    
+
     public Householder(Matrix A) {
         setA(A);
         calculate();
     }
-    
+
     @Override
     public void setA(Matrix A) {
         this.A = A;
@@ -41,7 +42,7 @@ public class Householder implements QRFactorization {
                 Matrix x = HA_part.getColumn(1);
                 Matrix e1 = MatrixOps.getColumnE(HA_part.getNumberOfRows(), 1);
                 Matrix v = x.add(e1.multiply(x.vectorNorm()));
-                Matrix u = v.multiply(1/v.vectorNorm());
+                Matrix u = v.multiply(1 / v.vectorNorm());
                 Matrix uT = u.copy().transpose();
                 Matrix H_part = MatrixOps.getIdentityMatrix(HA_part.getNumberOfRows()).subtract(u.multiply(uT).multiply(2));
                 Matrix H = MatrixOps.getIdentityMatrix(rows);
@@ -51,13 +52,13 @@ public class Householder implements QRFactorization {
             }
         }
         R = HA;
-        
+
         //Calculate Q
         Q = Hs.get(0);
         for (int i = 1; i < Hs.size(); i++) {
             Q = Q.multiply(Hs.get(i));
         }
-        
+
         //Matrix check = Q.copy().multiply(R);
         //MatrixOps.prettify(check);
         //System.out.println(check);

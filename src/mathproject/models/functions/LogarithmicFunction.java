@@ -10,15 +10,18 @@ public class LogarithmicFunction implements Function {
 
     @Override
     public double getValue(Vector v, double x) {
-        return v.get(1)*Math.log(x + v.get(2)) + v.get(3);
+        return v.get(1) * Math.log(x + v.get(2)) + v.get(3);
     }
 
     @Override
     public double getPartialDerivative(int j, Vector v, double x) {
         switch (j) {
-            case 1: return getPartialDerivativeA(v, x);
-            case 2: return getPartialDerivativeB(v, x);
-            case 3: return getPartialDerivativeC(v, x);
+            case 1:
+                return getPartialDerivativeA(v, x);
+            case 2:
+                return getPartialDerivativeB(v, x);
+            case 3:
+                return getPartialDerivativeC(v, x);
         }
         return 0;
     }

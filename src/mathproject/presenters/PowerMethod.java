@@ -8,13 +8,14 @@ import mathproject.models.Vector;
  * @author bvu
  */
 public class PowerMethod {
+
     Matrix A;
     Vector v;
     double norm;
     int iterations;
     double epsilon;
     int iterationsNeeded;
-    
+
     public PowerMethod(Matrix A, Vector initialVector, int iterations, double epsilon) {
         this.A = A;
         this.v = initialVector;
@@ -23,7 +24,7 @@ public class PowerMethod {
         norm = v.norm();
         process();
     }
-    
+
     private void process() {
         boolean inEpsilonRange = false;
         int i = 0;
@@ -35,7 +36,7 @@ public class PowerMethod {
                 inEpsilonRange = true;
             }
             norm = v.norm();
-            v = v.multiply(1/norm);
+            v = v.multiply(1 / norm);
         }
         if (!inEpsilonRange && i >= iterations) {
             v = null;
@@ -62,5 +63,5 @@ public class PowerMethod {
     public void setIterationsNeeded(int iterationsNeeded) {
         this.iterationsNeeded = iterationsNeeded;
     }
-    
+
 }

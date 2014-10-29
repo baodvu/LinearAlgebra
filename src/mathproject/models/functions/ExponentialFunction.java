@@ -16,9 +16,12 @@ public class ExponentialFunction implements Function {
     @Override
     public double getPartialDerivative(int j, Vector v, double x) {
         switch (j) {
-            case 1: return getPartialDerivativeA(v, x);
-            case 2: return getPartialDerivativeB(v, x);
-            case 3: return getPartialDerivativeC(v, x);
+            case 1:
+                return getPartialDerivativeA(v, x);
+            case 2:
+                return getPartialDerivativeB(v, x);
+            case 3:
+                return getPartialDerivativeC(v, x);
         }
         return 0;
     }

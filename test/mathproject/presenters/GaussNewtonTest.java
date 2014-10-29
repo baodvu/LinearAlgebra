@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package mathproject.presenters;
 
 import java.util.LinkedList;
@@ -46,25 +45,26 @@ import org.junit.Test;
  * @author bvu
  */
 public class GaussNewtonTest {
-    
+
     public GaussNewtonTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
+
     @Test
     public void testQuadraticFit() {
         List<Point> dataset = new LinkedList<>();
@@ -77,8 +77,8 @@ public class GaussNewtonTest {
         Vector beta = new Vector(1, 3, -1);
         GaussNewton gn = new GaussNewton();
         gn.setUp(dataset, rf, beta, 5);
-        
-        Vector expResult = new Vector(0.16,-2.0,0.85);
+
+        Vector expResult = new Vector(0.16, -2.0, 0.85);
         double delta = 0.1;
         Assert.assertEquals(expResult.get(1), gn.getBeta().get(1), delta);
         Assert.assertEquals(expResult.get(2), gn.getBeta().get(2), delta);
@@ -99,7 +99,7 @@ public class GaussNewtonTest {
         Vector beta = new Vector(-0.3, 0.3, 0.3);
         GaussNewton gn = new GaussNewton();
         gn.setUp(dataset, rf, beta, 5);
-        
+
         Vector expResult = new Vector(-0.2, 0.5, -0.07);
         double delta = 0.1;
         Assert.assertEquals(expResult.get(1), gn.getBeta().get(1), delta);
@@ -121,14 +121,14 @@ public class GaussNewtonTest {
         Vector beta = new Vector(-2, 10, 5);
         GaussNewton gn = new GaussNewton();
         gn.setUp(dataset, f, beta, 5);
-        
+
         Vector expResult = new Vector(-3.02, 7.8, 2.1);
         double delta = 0.1;
         Assert.assertEquals(expResult.get(1), gn.getBeta().get(1), delta);
         Assert.assertEquals(expResult.get(2), gn.getBeta().get(2), delta);
         Assert.assertEquals(expResult.get(3), gn.getBeta().get(3), delta);
     }
-    
+
     @Test
     public void testRationalFit() {
         List<Point> dataset = new LinkedList<>();
@@ -144,5 +144,5 @@ public class GaussNewtonTest {
         GaussNewton gn = new GaussNewton();
         gn.setUp(dataset, rf, beta, 5);
     }
-    
+
 }

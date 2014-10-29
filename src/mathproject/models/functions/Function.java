@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package mathproject.models.functions;
 
 import mathproject.models.Vector;
@@ -31,15 +30,15 @@ import mathproject.models.Vector;
  * @author bvu
  */
 public interface Function {
-    
+
     public double getValue(Vector v, double x);
-    
+
     public double getPartialDerivative(int j, Vector v, double x);
-    
+
     public double getPartialDerivativeA(Vector v, double x);
-    
+
     public double getPartialDerivativeB(Vector v, double x);
-    
+
     public double getPartialDerivativeC(Vector v, double x);
-    
+
 }
