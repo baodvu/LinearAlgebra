@@ -78,7 +78,7 @@ public class MainWindowController implements Initializable {
 
     public void plot() {
 
-        for (int i = 1; i <= 5000; i++) {
+        for (int i = 1; i <= 2000; i++) {
             Matrix m = generateMatrix();
             //System.out.println(m);
             Vector x = new Vector(1, 1);
@@ -90,6 +90,9 @@ public class MainWindowController implements Initializable {
             gc = canvas.getGraphicsContext2D();
             if (n > 0) {
                 plotPoint((int) (det * ratio), (int) (tr * ratio), n);
+                /*if (tr*tr - 4*det < 0) {
+                    System.out.println(m);
+                }*/
             }
 
             gc = canvas2.getGraphicsContext2D();
@@ -97,8 +100,8 @@ public class MainWindowController implements Initializable {
             x = new Vector(1, 1);
             pm = new PowerMethod(mInverse, x, MAX_NUMBER_OF_ITERATIONS, TOLERANCE);
             n = pm.getIterationsNeeded();
-            det = MatrixOps.determinant2x2(mInverse);
-            tr = MatrixOps.trace(mInverse);
+            //det = MatrixOps.determinant2x2(mInverse);
+            //tr = MatrixOps.trace(mInverse);
             if (n > 0) {
                 plotPoint((int) (det * ratio), (int) (tr * ratio), n);
             }
@@ -221,7 +224,8 @@ public class MainWindowController implements Initializable {
             GaussNewton gn = new GaussNewton();
             gn.setUp(dataset, rf, beta, Integer.parseInt(numIterations.getText()));
 
-            output.setText(gn.getBeta().toString());
+            beta = gn.getBeta();
+            output.setText(String.format("a = %.3f; b = %.3f; c = %.3f", beta.get(1), beta.get(2), beta.get(3)));
         } catch (Exception ex) {
             output.setText("INVALID INPUT");
         }

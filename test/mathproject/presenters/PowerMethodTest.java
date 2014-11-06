@@ -57,7 +57,7 @@ public class PowerMethodTest {
     @After
     public void tearDown() {
     }
-
+/*
     @Test
     public void test2x2() {
         Matrix A = new Matrix(2, 2);
@@ -76,6 +76,18 @@ public class PowerMethodTest {
         PowerMethod pm = new PowerMethod(A, x, 10, 0.0000001);
         //System.out.println(pm.getNorm());
         //System.out.println(pm.getV());
+    }*/
+    
+    @Test
+    public void testNegative() {
+        Matrix A = new Matrix(2,2);
+        //A.put(1.7284562947211088, 1.3922099811482793, -1.4415219305470965, 1.7481003925156733);
+        A.put(1, 1.1, 0, 2);
+        Vector x = new Vector(1, 1);
+        PowerMethod pm = new PowerMethod(A, x, 100, 0.00005);
+        System.out.println(pm.getNorm());
+        System.out.println(pm.getV());
+        System.out.println(pm.getIterationsNeeded());
     }
     
     /*@Test

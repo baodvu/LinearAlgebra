@@ -28,17 +28,27 @@ public class PowerMethod {
     private void process() {
         boolean inEpsilonRange = false;
         int i = 0;
+        double error = 0;
+        Vector prevV = v;
         while (i < iterations && !inEpsilonRange) {
             i++;
             v = MatrixOps.toVector(A.multiply(v));
-            double temp = v.norm();
-            if (Math.abs(temp - norm) < epsilon) {
-                inEpsilonRange = true;
+            if (v.get(1) < 0) {
+                v = v.multiply(-1);
             }
+            double temp = v.norm();
+            if (Math.abs(temp - norm) < epsilon && Math.abs(temp - norm) < error) {
+                Vector tempV = MatrixOps.toVector(MatrixOps.multiply(v, 1 / v.norm()));
+                if (Math.abs(tempV.get(1) - prevV.get(1)) + Math.abs(tempV.get(2) - prevV.get(2)) < 0.01) {
+                    inEpsilonRange = true;
+                }
+            }
+            error = Math.abs(temp - norm);
             norm = v.norm();
             v = v.multiply(1 / norm);
+            prevV = v;
         }
-        if (!inEpsilonRange && i >= iterations) {
+        if (i >= iterations) {
             v = null;
             iterationsNeeded = -1;
             //System.out.println("Failure to converge the vector in the given number of iterations.");

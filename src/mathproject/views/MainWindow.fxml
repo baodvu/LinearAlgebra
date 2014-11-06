@@ -34,7 +34,7 @@
          <center>
             <Accordion BorderPane.alignment="CENTER">
               <panes>
-                <TitledPane animated="false" text="Guass-Newton method">
+                <TitledPane animated="false" text="Gauss-Newton method">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
