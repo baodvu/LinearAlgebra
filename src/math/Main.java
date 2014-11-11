@@ -1,4 +1,4 @@
-package mathproject;
+package math;
 
 /*
  * Copyright 2014 Bao.
@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
@@ -28,7 +30,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import mathproject.presenters.MainWindowController;
+import javafx.stage.WindowEvent;
+import math.presenters.MainWindowController;
 
 /**
  *
@@ -50,6 +53,13 @@ public class Main extends Application {
             stage.setResizable(false);
             openMainScreen();
             primaryStage.show();
+            primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent t) {
+                    Platform.exit();
+                    System.exit(0);
+                }
+            });
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,7 +77,7 @@ public class Main extends Application {
      */
     public void openMainScreen() {
         try {
-            MainWindowController main = (MainWindowController) replaceSceneContent("views/MainWindow.fxml");
+            MainWindowController main = (MainWindowController) replaceSceneContent("ui/MainWindow.fxml");
             main.setApp(this);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

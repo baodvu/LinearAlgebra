@@ -1,6 +1,6 @@
-package mathproject.models.functions;
+package math.function;
 
-import mathproject.models.Vector;
+import math.matrix.Vector;
 
 /**
  *

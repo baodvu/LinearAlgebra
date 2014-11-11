@@ -24,8 +24,9 @@
 
 package mathproject.presenters;
 
-import mathproject.models.Matrix;
-import mathproject.models.Vector;
+import math.matrix.algorithm.PowerMethod;
+import math.matrix.Matrix;
+import math.matrix.Vector;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;

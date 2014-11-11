@@ -1,7 +1,8 @@
-package mathproject.presenters;
+package math.matrix.algorithm;
 
-import mathproject.models.Matrix;
-import mathproject.models.Vector;
+import math.matrix.MatrixOps;
+import math.matrix.Matrix;
+import math.matrix.Vector;
 
 /**
  *

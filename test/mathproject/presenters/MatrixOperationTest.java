@@ -5,9 +5,10 @@
  */
 package mathproject.presenters;
 
-import mathproject.models.Matrix;
-import mathproject.models.Vector;
-import static mathproject.presenters.MatrixOps.findPivotingRow;
+import math.matrix.MatrixOps;
+import math.matrix.Matrix;
+import math.matrix.Vector;
+import static math.matrix.MatrixOps.findPivotingRow;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;

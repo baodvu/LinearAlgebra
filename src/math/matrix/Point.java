@@ -1,4 +1,4 @@
-package mathproject.models;
+package math.matrix;
 
 /**
  *

@@ -1,21 +1,30 @@
-package mathproject.presenters.factor;
+package math.matrix.factor;
 
 import java.util.ArrayList;
 import java.util.List;
-import mathproject.models.Matrix;
-import mathproject.models.Vector;
-import mathproject.presenters.MatrixOps;
+import math.matrix.Matrix;
+import math.matrix.Vector;
+import math.matrix.MatrixOps;
 
 /**
  *
  * @author bvu
  */
-public class Householder implements QRFactorization {
+public class Householder implements Factorization {
 
     private Matrix A, Q, R;
     private List<Matrix> Hs;
-
+    
+    public Householder() {
+        
+    }
+ 
     public Householder(Matrix A) {
+        perform(A);
+    }
+
+    @Override
+    public void perform(Matrix A) {
         setA(A);
         calculate();
     }

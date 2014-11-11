@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mathproject.presenters.MainWindowController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="math.presenters.MainWindowController">
     <children>
       <BorderPane prefHeight="600.0" prefWidth="800.0">
          <top>
@@ -18,11 +18,16 @@
                     <MenuItem mnemonicParsing="false" text="Close" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
+                  <Menu mnemonicParsing="false" text="Factorization">
+                    <items>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#useHouseholder" selected="true" text="Householder">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="fact" />
+                           </toggleGroup></RadioMenuItem>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#useGivensRotation" text="Givens Rotation" toggleGroup="$fact" />
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Display" />
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />
@@ -75,6 +80,15 @@
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
+                  <TitledPane animated="false" text="Letter Rotation Animation">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Canvas fx:id="canvas3" height="473.0" layoutX="15.0" layoutY="15.0" width="768.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </TitledPane>
               </panes>
             </Accordion>
          </center>

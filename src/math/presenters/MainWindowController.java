@@ -1,5 +1,8 @@
-package mathproject.presenters;
+package math.presenters;
 
+import math.matrix.algorithm.GaussNewton;
+import math.matrix.algorithm.PowerMethod;
+import math.matrix.MatrixOps;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,8 +14,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,15 +30,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import mathproject.Main;
-import mathproject.models.Matrix;
-import mathproject.models.Point;
-import mathproject.models.Vector;
-import mathproject.models.functions.ExponentialFunction;
-import mathproject.models.functions.Function;
-import mathproject.models.functions.LogarithmicFunction;
-import mathproject.models.functions.QuadraticFunction;
-import mathproject.models.functions.RationalFunction;
+import math.Main;
+import math.matrix.Matrix;
+import math.matrix.Point;
+import math.matrix.Vector;
+import math.function.ExponentialFunction;
+import math.function.Function;
+import math.function.LogarithmicFunction;
+import math.function.QuadraticFunction;
+import math.function.RationalFunction;
+import math.matrix.factor.FactorizationProcessor;
+import math.matrix.factor.GivensRotation;
+import math.matrix.factor.Householder;
 
 /**
  *
@@ -50,13 +59,14 @@ public class MainWindowController implements Initializable {
     @FXML
     private ChoiceBox eqChoiceBox;
     @FXML
-    private Canvas canvas, canvas2;
+    private Canvas canvas, canvas2, canvas3;
     private GraphicsContext gc, gc2;
     private int MAX_NUMBER_OF_ITERATIONS = 100;
     private double TOLERANCE = 0.00005;
     private int windowDim = 500;
     private int ratio = 50;
     private List<Point> dataset = new LinkedList<>();
+    private int i = 1;
 
     /**
      * Links to main application
@@ -175,6 +185,7 @@ public class MainWindowController implements Initializable {
         ));
         eqChoiceBox.getSelectionModel().selectFirst();
         plot();
+        drawLetter();
     }
 
     @FXML
@@ -256,5 +267,117 @@ public class MainWindowController implements Initializable {
         }
 
         return stringBuffer.toString();
+    }
+    
+    @FXML
+    private void useHouseholder(ActionEvent event) {
+        FactorizationProcessor.setEngine(new Householder());
+    }
+
+    @FXML
+    private void useGivensRotation(ActionEvent event) {
+        FactorizationProcessor.setEngine(new GivensRotation());
+    }
+    
+    private void drawLetter() {
+        LinkedList<Vector> letterL = new LinkedList<>();
+        letterL.add(new Vector(0,0,0));
+        letterL.add(new Vector(4,0,0));
+        letterL.add(new Vector(4,2,0));
+        letterL.add(new Vector(2,2,0));
+        letterL.add(new Vector(2,6,0));
+        letterL.add(new Vector(0,6,0));
+        
+        int r = 30;
+        double theta = Math.PI/60;
+        gc = canvas3.getGraphicsContext2D();
+
+        i = 1;
+        /*gc.clearRect(0, 0, canvas3.getWidth(), canvas3.getHeight());
+        rotateLetter_X(letterL, theta*25);
+        drawSmallGraph(r);
+        drawLetter(letterL, r);*/
+        Matrix Rx = new Matrix(3,3);
+        Rx.put(1,0,0,0,Math.cos(theta),-Math.sin(theta),0,Math.sin(theta),Math.cos(theta));
+        Matrix Ry = new Matrix(3,3);
+        Ry.put(Math.cos(theta),0,Math.sin(theta),0,1,0,-Math.sin(theta),0,Math.cos(theta));
+        Matrix Rz = new Matrix(3,3);
+        Rz.put(Math.cos(theta),-Math.sin(theta),0,Math.sin(theta),Math.cos(theta),0,0,0,1);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        gc.clearRect(0, 0, canvas3.getWidth(), canvas3.getHeight());
+                        drawSmallGraph(r);
+                        drawLetter(letterL, r);
+                        rotateLetter(letterL, theta, Rz);
+                    }
+                });
+            }
+        }, 0, 100);
+    }
+    
+    private void rotateLetter(LinkedList<Vector> letter, double theta, Matrix R) {
+        //http://en.wikipedia.org/wiki/Rotation_matrix
+        for (int i = 0; i < letter.size(); i++) {
+            Vector vertex = letter.get(i);
+            vertex = MatrixOps.toVector(R.multiply(vertex));
+            letter.remove(i);
+            letter.add(i, vertex);
+        }
+    }
+    
+    private void drawLetter(LinkedList<Vector> letter, int r) {
+        gc.setFill(Color.rgb((int)Color.AQUAMARINE.getRed()*255, (int)Color.AQUAMARINE.getGreen()*255,
+                (int)Color.AQUAMARINE.getBlue()*255, 0.5));
+        double[] xPoints = new double[letter.size()];
+        double[] yPoints = new double[letter.size()];
+        for (int i = 0; i < letter.size(); i++) {
+            xPoints[i] = translateX((int) (letter.get(i).get(1)*r));
+            yPoints[i] = translateY((int) (letter.get(i).get(2)*r));
+        }
+        gc.fillPolygon(xPoints, yPoints, letter.size());
+        /*for (int i = 0; i < letter.size(); i++) {
+            int next = (i + 1) % letter.size();
+            System.out.println("Connecting " + i + " and " + next);
+            strokeLine((int) letter.get(i).get(1)*r,(int) letter.get(i).get(2)*r,
+                    (int) letter.get(next).get(1)*r,(int) letter.get(next).get(2)*r);
+        }*/
+    }
+    
+    public void drawSmallGraph(int r) {
+        gc.setFill(Color.BLACK);
+        strokeText("0", -8, -12);
+        strokeText("1", r - 8, -12);
+        strokeText("2", 2 * r - 8, -12);
+        strokeText("3", 3 * r - 8, -12);
+        strokeText("4", 4 * r - 8, -12);
+        strokeText("5", 5 * r - 8, -12);
+        strokeText("6", 6 * r - 8, -12);
+        strokeText("-1", -r - 8, -12);
+        strokeText("-2", -2 * r - 8, -12);
+        strokeText("-3", -3 * r - 8, -12);
+        strokeText("-4", -4 * r - 8, -12);
+        strokeText("-5", -5 * r - 8, -12);
+        strokeText("x", 8 * r - 8, -12);
+
+        strokeText("1", -8, r - 4);
+        strokeText("2", -8, 2 * r - 4);
+        strokeText("3", -8, 3 * r - 4);
+        strokeText("4", -8, 4 * r - 4);
+        strokeText("5", -8, 5 * r - 4);
+        strokeText("6", -8, 6 * r - 4);
+        strokeText("-1", -8, -r - 4);
+        strokeText("-2", -8, -2 * r - 4);
+        strokeText("-3", -8, -3 * r - 4);
+        strokeText("-4", -8, -4 * r - 4);
+        strokeText("-5", -8, -5 * r - 4);
+        strokeText("-6", -8, -6 * r - 4);
+        strokeText("y", -8, 7 * r - 4);
+
+        strokeLine(-windowDim, 0, windowDim, 0);
+        strokeLine(0, -windowDim, 0, windowDim);
     }
 }

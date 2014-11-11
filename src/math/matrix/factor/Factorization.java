@@ -1,13 +1,15 @@
-package mathproject.presenters.factor;
+package math.matrix.factor;
 
-import mathproject.models.Matrix;
+import math.matrix.Matrix;
 
 /**
  *
  * @author bvu
  */
-public interface QRFactorization {
+public interface Factorization {
 
+    public void perform(Matrix A);
+    
     public void setA(Matrix A);
 
     public Matrix getA();

@@ -1,4 +1,4 @@
-package mathproject.presenters;
+package math.matrix.algorithm;
 
 /**
  *

@@ -24,8 +24,9 @@
 
 package mathproject.presenters;
 
-import mathproject.presenters.factor.Householder;
-import mathproject.models.Matrix;
+import math.matrix.MatrixOps;
+import math.matrix.factor.Householder;
+import math.matrix.Matrix;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

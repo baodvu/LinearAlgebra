@@ -1,7 +1,7 @@
-package mathproject.presenters;
+package math.matrix;
 
-import mathproject.models.Matrix;
-import mathproject.models.Vector;
+import math.matrix.Matrix;
+import math.matrix.Vector;
 
 /**
  * Performs basic matrix operation

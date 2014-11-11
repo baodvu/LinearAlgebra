@@ -1,7 +1,6 @@
-package mathproject.models;
+package math.matrix;
 
 import java.util.Arrays;
-import mathproject.presenters.MatrixOps;
 
 /**
  * Holds values of and basic information about a vector

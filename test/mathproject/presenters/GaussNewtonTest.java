@@ -23,16 +23,17 @@
  */
 package mathproject.presenters;
 
+import math.matrix.algorithm.GaussNewton;
 import java.util.LinkedList;
 import java.util.List;
 import junit.framework.Assert;
-import mathproject.models.Point;
-import mathproject.models.Vector;
-import mathproject.models.functions.ExponentialFunction;
-import mathproject.models.functions.Function;
-import mathproject.models.functions.LogarithmicFunction;
-import mathproject.models.functions.QuadraticFunction;
-import mathproject.models.functions.RationalFunction;
+import math.matrix.Point;
+import math.matrix.Vector;
+import math.function.ExponentialFunction;
+import math.function.Function;
+import math.function.LogarithmicFunction;
+import math.function.QuadraticFunction;
+import math.function.RationalFunction;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;

@@ -1,12 +1,15 @@
-package mathproject.presenters;
+package math.matrix.algorithm;
 
-import mathproject.presenters.factor.Householder;
+import math.matrix.MatrixOps;
+import math.matrix.factor.Householder;
 import java.util.LinkedList;
 import java.util.List;
-import mathproject.models.Matrix;
-import mathproject.models.Point;
-import mathproject.models.Vector;
-import mathproject.models.functions.Function;
+import math.matrix.Matrix;
+import math.matrix.Point;
+import math.matrix.Vector;
+import math.function.Function;
+import math.matrix.factor.Factorization;
+import math.matrix.factor.FactorizationProcessor;
 
 /**
  *
@@ -19,6 +22,7 @@ public class GaussNewton {
     private int N;
     private Vector beta, r;
     private Matrix J;
+    private Factorization fact = FactorizationProcessor.INSTANCE;
 
     public GaussNewton() {
 
@@ -54,10 +58,11 @@ public class GaussNewton {
     }
 
     public void calculateBeta2() {
-        Householder hh = new Householder(J);
-        Matrix QT = hh.getQ().transpose();
+        System.out.println(J);
+        fact.perform(J);
+        Matrix QT = fact.getQ().transpose();
         Vector Qr = MatrixOps.toVector(QT.multiply(r));
-        Matrix R = hh.getR();
+        Matrix R = fact.getR();
         double x3 = Qr.get(3) / R.get(3, 3);
         double x2 = (Qr.get(2) - R.get(2, 3) * x3) / R.get(2, 2);
         double x1 = (Qr.get(1) - R.get(1, 2) * x2 - R.get(1, 3) * x3) / R.get(1, 1);

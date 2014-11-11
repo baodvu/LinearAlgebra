@@ -1,16 +1,16 @@
-package mathproject.models.functions;
+package math.function;
 
-import mathproject.models.Vector;
+import math.matrix.Vector;
 
 /**
  *
  * @author bvu
  */
-public class ExponentialFunction implements Function {
+public class LogarithmicFunction implements Function {
 
     @Override
     public double getValue(Vector v, double x) {
-        return v.get(1) * Math.pow(Math.E, v.get(2) * x) + v.get(3);
+        return v.get(1) * Math.log(x + v.get(2)) + v.get(3);
     }
 
     @Override
@@ -28,12 +28,12 @@ public class ExponentialFunction implements Function {
 
     @Override
     public double getPartialDerivativeA(Vector v, double x) {
-        return Math.pow(Math.E, v.get(2) * x);
+        return Math.log(x + v.get(2));
     }
 
     @Override
     public double getPartialDerivativeB(Vector v, double x) {
-        return v.get(1) * x * Math.pow(Math.E, x * v.get(2));
+        return v.get(1) / (x + v.get(2));
     }
 
     @Override

@@ -1,19 +1,28 @@
-package mathproject.presenters.factor;
+package math.matrix.factor;
 
 import java.util.ArrayList;
 import java.util.List;
-import mathproject.models.Matrix;
+import math.matrix.Matrix;
+import math.matrix.MatrixOps;
 
 /**
  *
  * @author bvu
  */
-public class GivensRotation implements QRFactorization {
+public class GivensRotation implements Factorization {
 
     private Matrix A, Q, R;
     private List<Matrix> Gs;
 
+    public GivensRotation() {
+    }
+
     public GivensRotation(Matrix A) {
+        perform(A);
+    }
+
+    @Override
+    public void perform(Matrix A) {
         setA(A);
         calculate();
     }
@@ -30,24 +39,27 @@ public class GivensRotation implements QRFactorization {
 
     @Override
     public void calculate() {
-        Gs = new ArrayList<>();
-        Matrix GA = A.copy();
         int rows = A.getNumberOfRows();
         int cols = A.getNumberOfCols();
-        for (int j = 1; j <= cols; j++) {
-            for (int i = j + 1; i <= rows; i++) {
+        int n = Math.max(rows, cols);
+        if (rows != cols) {
+            Matrix B = new Matrix(n, n);
+            MatrixOps.overwrite(B, A, 1, 1);
+            A = B;
+        }
+        Gs = new ArrayList<>();
+        Matrix GA = A.copy();
+        for (int j = 1; j <= n; j++) {
+            for (int i = j + 1; i <= n; i++) {
                 if (GA.get(i, j) != 0) {
-                    Matrix G = new Matrix(rows, cols);
+                    Matrix G = new Matrix(n, n);
                     double a = GA.get(j, j);
                     double b = GA.get(i, j);
                     double r = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-                    double c = a/r;
-                    double s = -b/r;
-                    System.out.println(r);
-                    System.out.println(c);
-                    System.out.println(s);
-                    for (int row = 1; row <= rows; row++) {
-                        for (int col = 1; col <= cols; col++) {
+                    double c = a / r;
+                    double s = -b / r;
+                    for (int row = 1; row <= n; row++) {
+                        for (int col = 1; col <= n; col++) {
                             double value = 0;
                             if ((row == i && col == i) || (row == j && col == j)) {
                                 value = c;
@@ -65,11 +77,19 @@ public class GivensRotation implements QRFactorization {
                     if (GA.get(i, j) < 0.0000000001) {
                         GA.put(i, j, 0);
                     }
-                    System.out.println(GA);
+                    Gs.add(G);
                 }
             }
         }
-        
+        R = new Matrix(rows, cols);
+        for (int i = 1; i <= rows; i++)
+            for (int j = 1; j <= cols; j++)
+                R.put(i, j, GA.get(i, j));
+                
+        Q = Gs.get(0).transpose();
+        for (int i = 1; i < Gs.size(); i++) {
+            Q = Q.multiply(Gs.get(i).transpose());
+        }
     }
 
     @Override

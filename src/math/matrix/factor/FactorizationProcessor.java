@@ -21,56 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mathproject.presenters.factor;
+package math.matrix.factor;
 
-import math.matrix.factor.GivensRotation;
 import math.matrix.Matrix;
-import math.matrix.MatrixOps;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Bao
  */
-public class GivensRotationTest {
-    
-    public GivensRotationTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+public class FactorizationProcessor {
+    public static Factorization INSTANCE = new GivensRotation();
+
+    public static void factorize(Matrix A) {
+        INSTANCE.perform(A);
     }
 
-    /**
-     * Test of calculate method, of class Householder.
-     */
-    @Test
-    public void testCalculate1() {
-        Matrix A = new Matrix(5,3);
-        A.put(6,5,0,5,1,4,0,4,3,1,4,3,8,1,2);
-        GivensRotation instance = new GivensRotation(A);
-        Matrix Q = instance.getQ();
-        Matrix R = instance.getR();
-        System.out.println(Q);
-        System.out.println(R);
-        System.out.println(MatrixOps.prettify(Q.multiply(R)));
+    public static Matrix getQ() {
+        return INSTANCE.getQ();
+    }
+
+    public static Matrix getR() {
+        return INSTANCE.getR();
     }
     
+    public static void setEngine(Factorization f) {
+        INSTANCE = f;
+    }
 }

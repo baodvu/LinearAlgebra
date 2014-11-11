@@ -1,6 +1,6 @@
 package mathproject.presenters;
 
-import mathproject.models.Vector;
+import math.matrix.Vector;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
