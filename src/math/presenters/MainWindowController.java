@@ -1,8 +1,5 @@
 package math.presenters;
 
-import math.matrix.algorithm.GaussNewton;
-import math.matrix.algorithm.PowerMethod;
-import math.matrix.MatrixOps;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +16,8 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,14 +30,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import math.Main;
-import math.matrix.Matrix;
-import math.matrix.Point;
-import math.matrix.Vector;
 import math.function.ExponentialFunction;
 import math.function.Function;
 import math.function.LogarithmicFunction;
 import math.function.QuadraticFunction;
 import math.function.RationalFunction;
+import math.matrix.Matrix;
+import math.matrix.MatrixOps;
+import math.matrix.Point;
+import math.matrix.Vector;
+import math.matrix.algorithm.GaussNewton;
+import math.matrix.algorithm.PowerMethod;
 import math.matrix.factor.FactorizationProcessor;
 import math.matrix.factor.GivensRotation;
 import math.matrix.factor.Householder;
@@ -57,7 +59,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private TextField numIterations, a, b, c;
     @FXML
-    private ChoiceBox eqChoiceBox;
+    private ChoiceBox eqChoiceBox, letterCBox;
     @FXML
     private Canvas canvas, canvas2, canvas3;
     private GraphicsContext gc, gc2;
@@ -66,7 +68,7 @@ public class MainWindowController implements Initializable {
     private int windowDim = 500;
     private int ratio = 50;
     private List<Point> dataset = new LinkedList<>();
-    private int i = 1;
+    private Timer timer;
 
     /**
      * Links to main application
@@ -138,16 +140,15 @@ public class MainWindowController implements Initializable {
         strokeText("-3", -3 * ratio - 8, -12);
         strokeText("-4", -4 * ratio - 8, -12);
         strokeText("-5", -5 * ratio - 8, -12);
-        strokeText("det(A)", 8 * ratio - 8, -12);
+        strokeText("det(A)", 7 * ratio - 8, -12);
 
         strokeText("1", -8, ratio - 12);
         strokeText("2", -8, 2 * ratio - 12);
         strokeText("3", -8, 3 * ratio - 12);
-        strokeText("4", -8, 4 * ratio - 12);
         strokeText("-1", -8, -ratio - 12);
         strokeText("-2", -8, -2 * ratio - 12);
         strokeText("-3", -8, -3 * ratio - 12);
-        strokeText("tr(A)", -28, 5 * ratio - 12);
+        strokeText("tr(A)", -28, 4 * ratio - 12);
 
         strokeLine(-windowDim, 0, windowDim, 0);
         strokeLine(0, -windowDim, 0, windowDim);
@@ -171,11 +172,11 @@ public class MainWindowController implements Initializable {
     }
 
     public int translateX(int x) {
-        return 300 + x;
+        return 360 + x;
     }
 
     public int translateY(int y) {
-        return 250 - y;
+        return 230 - y;
     }
 
     @Override
@@ -280,6 +281,10 @@ public class MainWindowController implements Initializable {
     }
     
     private void drawLetter() {
+        letterCBox.setItems(FXCollections.observableArrayList(
+                "Letter L", "Letter U", "Letter Z"
+        ));
+        
         LinkedList<Vector> letterL = new LinkedList<>();
         letterL.add(new Vector(0,0,0));
         letterL.add(new Vector(4,0,0));
@@ -288,22 +293,54 @@ public class MainWindowController implements Initializable {
         letterL.add(new Vector(2,6,0));
         letterL.add(new Vector(0,6,0));
         
+        LinkedList<Vector> letterU = new LinkedList<>();
+        letterU.add(new Vector(0,0,0));
+        letterU.add(new Vector(4,0,0));
+        letterU.add(new Vector(4,6,0));
+        letterU.add(new Vector(2.5,6,0));
+        letterU.add(new Vector(2.5,1,0));
+        letterU.add(new Vector(1.5,1,0));
+        letterU.add(new Vector(1.5,6,0));
+        letterU.add(new Vector(0,6,0));
+        
+        LinkedList<Vector> letterZ = new LinkedList<>();
+        letterZ.add(new Vector(0,0,0));
+        letterZ.add(new Vector(4,0,0));
+        letterZ.add(new Vector(4,1,0));
+        letterZ.add(new Vector(1,1,0));
+        letterZ.add(new Vector(4,5,0));
+        letterZ.add(new Vector(4,6,0));
+        letterZ.add(new Vector(0,6,0));
+        letterZ.add(new Vector(0,5,0));
+        letterZ.add(new Vector(3,5,0));
+        letterZ.add(new Vector(0,1,0));
+        
         int r = 30;
         double theta = Math.PI/60;
         gc = canvas3.getGraphicsContext2D();
-
-        i = 1;
-        /*gc.clearRect(0, 0, canvas3.getWidth(), canvas3.getHeight());
-        rotateLetter_X(letterL, theta*25);
-        drawSmallGraph(r);
-        drawLetter(letterL, r);*/
+        
         Matrix Rx = new Matrix(3,3);
         Rx.put(1,0,0,0,Math.cos(theta),-Math.sin(theta),0,Math.sin(theta),Math.cos(theta));
         Matrix Ry = new Matrix(3,3);
         Ry.put(Math.cos(theta),0,Math.sin(theta),0,1,0,-Math.sin(theta),0,Math.cos(theta));
         Matrix Rz = new Matrix(3,3);
         Rz.put(Math.cos(theta),-Math.sin(theta),0,Math.sin(theta),Math.cos(theta),0,0,0,1);
-        Timer timer = new Timer();
+        
+        letterCBox.valueProperty().addListener(new ChangeListener<String>(){
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                switch (letterCBox.getSelectionModel().getSelectedIndex()) {
+                    case 0: animate(letterL, theta, r, Rx); break;
+                    case 1: animate(letterU, theta, r, Ry); break;
+                    case 2: animate(letterZ, theta, r, Rz);
+                }
+            }
+        });
+    }
+    
+    private void animate(LinkedList<Vector> letter, double theta, int r, Matrix R) {
+        if (timer != null) timer.cancel();
+        timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -311,8 +348,8 @@ public class MainWindowController implements Initializable {
                     public void run() {
                         gc.clearRect(0, 0, canvas3.getWidth(), canvas3.getHeight());
                         drawSmallGraph(r);
-                        drawLetter(letterL, r);
-                        rotateLetter(letterL, theta, Rz);
+                        drawLetter(letter, r);
+                        rotateLetter(letter, theta, R);
                     }
                 });
             }
