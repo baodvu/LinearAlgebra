@@ -103,8 +103,8 @@ public class MainWindowController implements Initializable {
             if (n > 0) {
                 plotPoint((int) (det * ratio), (int) (tr * ratio), n);
                 /*if (tr*tr - 4*det < 0) {
-                    System.out.println(m);
-                }*/
+                 System.out.println(m);
+                 }*/
             }
 
             gc = canvas2.getGraphicsContext2D();
@@ -269,7 +269,7 @@ public class MainWindowController implements Initializable {
 
         return stringBuffer.toString();
     }
-    
+
     @FXML
     private void useHouseholder(ActionEvent event) {
         FactorizationProcessor.setEngine(new Householder());
@@ -279,67 +279,74 @@ public class MainWindowController implements Initializable {
     private void useGivensRotation(ActionEvent event) {
         FactorizationProcessor.setEngine(new GivensRotation());
     }
-    
+
     private void drawLetter() {
         letterCBox.setItems(FXCollections.observableArrayList(
                 "Letter L", "Letter U", "Letter Z"
         ));
-        
+
         LinkedList<Vector> letterL = new LinkedList<>();
-        letterL.add(new Vector(0,0,0));
-        letterL.add(new Vector(4,0,0));
-        letterL.add(new Vector(4,2,0));
-        letterL.add(new Vector(2,2,0));
-        letterL.add(new Vector(2,6,0));
-        letterL.add(new Vector(0,6,0));
-        
+        letterL.add(new Vector(0, 0, 0));
+        letterL.add(new Vector(4, 0, 0));
+        letterL.add(new Vector(4, 2, 0));
+        letterL.add(new Vector(2, 2, 0));
+        letterL.add(new Vector(2, 6, 0));
+        letterL.add(new Vector(0, 6, 0));
+
         LinkedList<Vector> letterU = new LinkedList<>();
-        letterU.add(new Vector(0,0,0));
-        letterU.add(new Vector(4,0,0));
-        letterU.add(new Vector(4,6,0));
-        letterU.add(new Vector(2.5,6,0));
-        letterU.add(new Vector(2.5,1,0));
-        letterU.add(new Vector(1.5,1,0));
-        letterU.add(new Vector(1.5,6,0));
-        letterU.add(new Vector(0,6,0));
-        
+        letterU.add(new Vector(0, 0, 0));
+        letterU.add(new Vector(4, 0, 0));
+        letterU.add(new Vector(4, 6, 0));
+        letterU.add(new Vector(2.5, 6, 0));
+        letterU.add(new Vector(2.5, 1, 0));
+        letterU.add(new Vector(1.5, 1, 0));
+        letterU.add(new Vector(1.5, 6, 0));
+        letterU.add(new Vector(0, 6, 0));
+
         LinkedList<Vector> letterZ = new LinkedList<>();
-        letterZ.add(new Vector(0,0,0));
-        letterZ.add(new Vector(4,0,0));
-        letterZ.add(new Vector(4,1,0));
-        letterZ.add(new Vector(1,1,0));
-        letterZ.add(new Vector(4,5,0));
-        letterZ.add(new Vector(4,6,0));
-        letterZ.add(new Vector(0,6,0));
-        letterZ.add(new Vector(0,5,0));
-        letterZ.add(new Vector(3,5,0));
-        letterZ.add(new Vector(0,1,0));
-        
+        letterZ.add(new Vector(0, 0, 0));
+        letterZ.add(new Vector(4, 0, 0));
+        letterZ.add(new Vector(4, 1, 0));
+        letterZ.add(new Vector(1, 1, 0));
+        letterZ.add(new Vector(4, 5, 0));
+        letterZ.add(new Vector(4, 6, 0));
+        letterZ.add(new Vector(0, 6, 0));
+        letterZ.add(new Vector(0, 5, 0));
+        letterZ.add(new Vector(3, 5, 0));
+        letterZ.add(new Vector(0, 1, 0));
+
         int r = 30;
-        double theta = Math.PI/60;
+        double theta = Math.PI / 60;
         gc = canvas3.getGraphicsContext2D();
-        
-        Matrix Rx = new Matrix(3,3);
-        Rx.put(1,0,0,0,Math.cos(theta),-Math.sin(theta),0,Math.sin(theta),Math.cos(theta));
-        Matrix Ry = new Matrix(3,3);
-        Ry.put(Math.cos(theta),0,Math.sin(theta),0,1,0,-Math.sin(theta),0,Math.cos(theta));
-        Matrix Rz = new Matrix(3,3);
-        Rz.put(Math.cos(theta),-Math.sin(theta),0,Math.sin(theta),Math.cos(theta),0,0,0,1);
-        
-        letterCBox.valueProperty().addListener(new ChangeListener<String>(){
+
+        Matrix Rx = new Matrix(3, 3);
+        Rx.put(1, 0, 0, 0, Math.cos(theta), -Math.sin(theta), 0, Math.sin(theta), Math.cos(theta));
+        Matrix Ry = new Matrix(3, 3);
+        Ry.put(Math.cos(theta), 0, Math.sin(theta), 0, 1, 0, -Math.sin(theta), 0, Math.cos(theta));
+        Matrix Rz = new Matrix(3, 3);
+        Rz.put(Math.cos(theta), -Math.sin(theta), 0, Math.sin(theta), Math.cos(theta), 0, 0, 0, 1);
+
+        letterCBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 switch (letterCBox.getSelectionModel().getSelectedIndex()) {
-                    case 0: animate(letterL, theta, r, Rx); break;
-                    case 1: animate(letterU, theta, r, Ry); break;
-                    case 2: animate(letterZ, theta, r, Rz);
+                    case 0:
+                        animate(letterL, theta, r, Rx);
+                        break;
+                    case 1:
+                        animate(letterU, theta, r, Ry);
+                        break;
+                    case 2:
+                        animate(letterZ, theta, r, Rz);
                 }
             }
         });
     }
-    
+
     private void animate(LinkedList<Vector> letter, double theta, int r, Matrix R) {
-        if (timer != null) timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+        }
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -349,13 +356,22 @@ public class MainWindowController implements Initializable {
                         gc.clearRect(0, 0, canvas3.getWidth(), canvas3.getHeight());
                         drawSmallGraph(r);
                         drawLetter(letter, r);
+                        Point p = getCenter(letter);
+                        translateLetter(letter, -p.getX(), -p.getY());
                         rotateLetter(letter, theta, R);
+                        translateLetter(letter, p.getX(), p.getY());
                     }
                 });
             }
-        }, 0, 100);
+        }, 0, 1000 / 24);
     }
-    
+
+    private void translateLetter(LinkedList<Vector> letter, double x, double y) {
+        for (Vector v : letter) {
+            v.put(v.get(1) + x, v.get(2) + y, v.get(3));
+        }
+    }
+
     private void rotateLetter(LinkedList<Vector> letter, double theta, Matrix R) {
         //http://en.wikipedia.org/wiki/Rotation_matrix
         for (int i = 0; i < letter.size(); i++) {
@@ -365,25 +381,25 @@ public class MainWindowController implements Initializable {
             letter.add(i, vertex);
         }
     }
-    
+
     private void drawLetter(LinkedList<Vector> letter, int r) {
-        gc.setFill(Color.rgb((int)Color.AQUAMARINE.getRed()*255, (int)Color.AQUAMARINE.getGreen()*255,
-                (int)Color.AQUAMARINE.getBlue()*255, 0.5));
+        gc.setFill(Color.rgb((int) Color.AQUAMARINE.getRed() * 255, (int) Color.AQUAMARINE.getGreen() * 255,
+                (int) Color.AQUAMARINE.getBlue() * 255, 0.5));
         double[] xPoints = new double[letter.size()];
         double[] yPoints = new double[letter.size()];
         for (int i = 0; i < letter.size(); i++) {
-            xPoints[i] = translateX((int) (letter.get(i).get(1)*r));
-            yPoints[i] = translateY((int) (letter.get(i).get(2)*r));
+            xPoints[i] = translateX((int) (letter.get(i).get(1) * r));
+            yPoints[i] = translateY((int) (letter.get(i).get(2) * r));
         }
         gc.fillPolygon(xPoints, yPoints, letter.size());
         /*for (int i = 0; i < letter.size(); i++) {
-            int next = (i + 1) % letter.size();
-            System.out.println("Connecting " + i + " and " + next);
-            strokeLine((int) letter.get(i).get(1)*r,(int) letter.get(i).get(2)*r,
-                    (int) letter.get(next).get(1)*r,(int) letter.get(next).get(2)*r);
-        }*/
+         int next = (i + 1) % letter.size();
+         System.out.println("Connecting " + i + " and " + next);
+         strokeLine((int) letter.get(i).get(1)*r,(int) letter.get(i).get(2)*r,
+         (int) letter.get(next).get(1)*r,(int) letter.get(next).get(2)*r);
+         }*/
     }
-    
+
     public void drawSmallGraph(int r) {
         gc.setFill(Color.BLACK);
         strokeText("0", -8, -12);
@@ -416,5 +432,27 @@ public class MainWindowController implements Initializable {
 
         strokeLine(-windowDim, 0, windowDim, 0);
         strokeLine(0, -windowDim, 0, windowDim);
+    }
+
+    private Point getCenter(LinkedList<Vector> letter) {
+        double minX = letter.get(0).get(1);
+        double minY = letter.get(0).get(2);
+        double maxX = letter.get(0).get(1);
+        double maxY = letter.get(0).get(2);
+        for (Vector v : letter) {
+            if (v.get(1) < minX) {
+                minX = v.get(1);
+            }
+            if (v.get(2) < minY) {
+                minY = v.get(2);
+            }
+            if (v.get(1) > maxX) {
+                maxX = v.get(1);
+            }
+            if (v.get(2) > maxY) {
+                maxY = v.get(2);
+            }
+        }
+        return new Point((minX + maxX) / 2, (minY + maxY) / 2);
     }
 }
