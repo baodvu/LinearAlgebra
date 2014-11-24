@@ -130,6 +130,24 @@ public class Matrix {
 
     @Override
     public String toString() {
+        return toSimpleString();
+    }
+    
+    private String toSimpleString() {
+        String s = "";
+        for (int r = 1; r <= n; r++) {
+            for (int c = 1; c <= m; c++) {
+                s += String.format("%-8.4f", get(r, c));
+            }
+            if (r != n) {
+                s += "\n";
+            }
+        }
+        s += "\n";
+        return s;
+    }
+    
+    private String toAdvancedString() {
         String s = "Matrix " + n + "x" + m + ":\n{";
         for (int r = 1; r <= n; r++) {
             s += "{";

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -41,6 +42,7 @@ import math.matrix.Point;
 import math.matrix.Vector;
 import math.matrix.algorithm.GaussNewton;
 import math.matrix.algorithm.PowerMethod;
+import math.matrix.factor.Factorization;
 import math.matrix.factor.FactorizationProcessor;
 import math.matrix.factor.GivensRotation;
 import math.matrix.factor.Householder;
@@ -53,9 +55,17 @@ public class MainWindowController implements Initializable {
 
     private Main application;
     private final FileChooser fileChooser = new FileChooser();
+    private Factorization fact = FactorizationProcessor.INSTANCE;
+    private int frame = 0;
 
     @FXML
     private TextArea input, output;
+    @FXML
+    private TextArea qrInput, qrMatrixQ, qrMatrixR;
+    @FXML
+    private TextArea pmInput, pmVector, pmVectorInput;
+    @FXML
+    private TextField pmValue, pmIteration;
     @FXML
     private TextField numIterations, a, b, c;
     @FXML
@@ -329,21 +339,22 @@ public class MainWindowController implements Initializable {
         letterCBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                frame = 0;
                 switch (letterCBox.getSelectionModel().getSelectedIndex()) {
                     case 0:
-                        animate(letterL, theta, r, Rx);
+                        animate(letterL, theta, r, Rx, 120);
                         break;
                     case 1:
-                        animate(letterU, theta, r, Ry);
+                        animate(letterU, theta, r, Ry, 240);
                         break;
                     case 2:
-                        animate(letterZ, theta, r, Rz);
+                        animate(letterZ, theta, r, Rz, 360);
                 }
             }
         });
     }
 
-    private void animate(LinkedList<Vector> letter, double theta, int r, Matrix R) {
+    private void animate(LinkedList<Vector> letter, double theta, int r, Matrix R, int times) {
         if (timer != null) {
             timer.cancel();
         }
@@ -360,6 +371,8 @@ public class MainWindowController implements Initializable {
                         translateLetter(letter, -p.getX(), -p.getY());
                         rotateLetter(letter, theta, R);
                         translateLetter(letter, p.getX(), p.getY());
+                        if (frame >= times) cancel();
+                        frame++;
                     }
                 });
             }
@@ -454,5 +467,87 @@ public class MainWindowController implements Initializable {
             }
         }
         return new Point((minX + maxX) / 2, (minY + maxY) / 2);
+    }
+    
+    @FXML
+    private void factorize(ActionEvent event) {
+        Scanner s = new Scanner(qrInput.getText());
+        int row = 0;
+        int col = 0;
+        ArrayList<Double> vals = new ArrayList();
+        try {
+            while (s.hasNextLine()) {
+                String line = s.nextLine();
+                Scanner lineScanner = new Scanner(line);
+                while (lineScanner.hasNext()) {
+                    vals.add(lineScanner.nextDouble());
+                    if (row == 0) {
+                        col++;
+                    }
+                }
+                row++;
+            }
+            Matrix A = new Matrix(row, col);
+            double[] dvals = new double[vals.size()];
+            for (int i = 0; i < dvals.length; i++) {
+                dvals[i] = vals.get(i);
+            }
+            A.put(dvals);
+            fact.perform(A);
+            qrMatrixQ.setText(fact.getQ().toString());
+            qrMatrixR.setText(fact.getR().toString());
+        } catch (Exception e) {
+            qrMatrixQ.setText("INVALID INPUT");
+            qrMatrixR.setText("INVALID INPUT");
+        }
+    }
+
+    @FXML
+    private void doPowerMethod(ActionEvent event) {
+        Scanner s = new Scanner(pmInput.getText());
+        int row = 0;
+        int col = 0;
+        ArrayList<Double> vals = new ArrayList();
+        try {
+            while (s.hasNextLine()) {
+                String line = s.nextLine();
+                Scanner lineScanner = new Scanner(line);
+                while (lineScanner.hasNext()) {
+                    vals.add(lineScanner.nextDouble());
+                    if (row == 0) {
+                        col++;
+                    }
+                }
+                row++;
+            }
+            Matrix A = new Matrix(row, col);
+            double[] dvals = new double[vals.size()];
+            for (int i = 0; i < dvals.length; i++) {
+                dvals[i] = vals.get(i);
+            }
+            A.put(dvals);
+            
+            s = new Scanner(pmVectorInput.getText());
+            ArrayList<Double> initVector = new ArrayList<>();
+            while (s.hasNextLine()) {
+                String line = s.nextLine();
+                Scanner lineScanner = new Scanner(line);
+                if (lineScanner.hasNextDouble()) {
+                    initVector.add(lineScanner.nextDouble());
+                }
+            }
+            dvals = new double[initVector.size()];
+            for (int i = 0; i < dvals.length; i++) {
+                dvals[i] = initVector.get(i);
+            }
+            Vector x = new Vector(dvals);
+            
+            PowerMethod pm = new PowerMethod(A, x, MAX_NUMBER_OF_ITERATIONS, TOLERANCE);
+            pmValue.setText(pm.getNorm() + "");
+            pmVector.setText(pm.getV() + "");
+            pmIteration.setText(pm.getIterationsNeeded() + "");
+        } catch (Exception e) {
+            pmValue.setText("INVALID INPUT");
+        }
     }
 }
